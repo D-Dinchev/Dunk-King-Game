@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallController : MonoBehaviour
@@ -20,6 +18,8 @@ public class BallController : MonoBehaviour
 
     private void Update()
     {
+        if (_rb.velocity.magnitude > 0.001f) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             _dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
