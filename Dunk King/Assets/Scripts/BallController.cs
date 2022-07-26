@@ -10,15 +10,26 @@ public class BallController : MonoBehaviour
     private Vector2 _dragStartPos;
     private float _maxVelocity = 9f;
 
+    private GameObject _stickedHoop;
+
+    private bool _isRotationActive = false;
+
     private void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
         _lr = GetComponent<LineRenderer>();
+
+        GameEvents.Instance.OnRightHit += ToggleRotationActivity;
     }
 
     private void Update()
     {
-        if (_rb.velocity.magnitude > 0.001f) return;
+        if (_rb.velocity.magnitude > 0.001f)
+        {
+            if (_isRotationActive) transform.Rotate(0f, 0f, 5f);
+            return;
+        }
+
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -46,6 +57,7 @@ public class BallController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            ToggleRotationActivity();
             _lr.positionCount = 0;
             Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
@@ -79,5 +91,32 @@ public class BallController : MonoBehaviour
     private static Vector2 ClampVelocity(Vector2 velocity, float maxVelocity)
     {
         return velocity.magnitude > maxVelocity ? velocity.normalized * maxVelocity : velocity; 
+    }
+
+    public void StickToHoop(GameObject hoop)
+    {
+        if (_stickedHoop) return;
+
+        _stickedHoop = hoop;
+        transform.parent = _stickedHoop.transform;
+        //GetComponent<Rigidbody2D>().simulated = false;
+    }
+
+    public void UnstickToHoop()
+    {
+        if (!_stickedHoop) return;
+        transform.parent = null;
+        _stickedHoop = null;
+        //GetComponent<Rigidbody2D>().simulated = true;
+    }
+
+    private void ToggleRotationActivity()
+    {
+        _isRotationActive = !_isRotationActive;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.Instance.OnRightHit -= ToggleRotationActivity;
     }
 }
