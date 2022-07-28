@@ -11,7 +11,7 @@
 [Mm]emoryCaptures/
 
 # TextMesh Pro files
-[Aa]ssets/TextMesh*Pro/
+Dunk*King/[Aa]ssets/TextMesh*Pro/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

@@ -7,11 +7,12 @@ TagManager:
   - Grey
   - Red
   - Bounds
+  - Canvas
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Walls
   - Water
   - UI
   - 

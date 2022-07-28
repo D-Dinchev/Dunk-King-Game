@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class HoopGeneratorHandler : MonoBehaviour
 {
+    public static HoopGeneratorHandler Instance { get; private set; }
+
     public GameObject RedHoopPrefab;
     public GameObject GreyHoopPrefab;
 
     private float _minYDifference = 1f, _maxYDifference = 3.5f;
-    //private float _maxRotationAnge = 34f;
+    private float _maxRotationAnge = 34f;
 
     private Transform _bounds;
 
@@ -22,13 +24,17 @@ public class HoopGeneratorHandler : MonoBehaviour
     private float _minDistanceBetweenHoops;
 
     private BallController _ballController;
-    
+
+    private void Awake()
+    {
+        Instance = this;
+        _bounds = GameObject.FindGameObjectWithTag("Bounds").transform;
+        _startPosition = _bounds.transform.Find("StartPosition").position;
+    }
 
     private void Start()
     {
-        _bounds = GameObject.FindGameObjectWithTag("Bounds").transform;
         _boundsCenter = _bounds.transform.Find("Center").position;
-        _startPosition = _bounds.transform.Find("StartPosition").position;
         _ySpawnPoint = _bounds.transform.Find("YSpawnPoint").position.y;
         _rightCornerOfBounds = _bounds.Find("Right").GetComponent<SpriteRenderer>().bounds.min;
         _leftCornerOfBounds = _bounds.Find("Left").GetComponent<SpriteRenderer>().bounds.max;
@@ -41,7 +47,16 @@ public class HoopGeneratorHandler : MonoBehaviour
         _minDistanceBetweenHoops = _halfOfHoopWidth * 2;
 
         GameEvents.Instance.OnRightHit += GenerateRedHoop;
-    } 
+    }
+
+    public void StartGeneration()
+    {
+        GameObject startGreyHoop = Instantiate(GreyHoopPrefab, _startPosition, Quaternion.identity);
+        Instantiate(RedHoopPrefab, _boundsCenter + Vector3.up + Vector3.left / 2, Quaternion.identity);
+        
+        GameObject ball = GameObject.FindGameObjectWithTag("Player");
+        ball.transform.position = startGreyHoop.transform.Find("front").position;
+    }
     private void GenerateRedHoop() // TODO
     {
         Transform currentRedHoop = GameObject.FindGameObjectWithTag("Red").transform;
@@ -51,6 +66,7 @@ public class HoopGeneratorHandler : MonoBehaviour
 
         float positionX = Random.Range(minXPosition, maxXPosition);
         float positionY = Random.Range(_startPosition.y + _minYDifference, _startPosition.y + _maxYDifference);
+        float rotationZ = Random.Range(0f, _maxRotationAnge); // left side
 
         if (currentRedHoop.position.x > _boundsCenter.x) // to the left of bounds center
         {
@@ -58,11 +74,12 @@ public class HoopGeneratorHandler : MonoBehaviour
             maxXPosition = currentRedHoop.position.x - _minDistanceBetweenHoops;
 
             positionX = Random.Range(maxXPosition, minXPosition);
+            rotationZ *= -1f; // right side
         }
 
         if (RedHoopPrefab && GreyHoopPrefab)
         {
-            GameObject newRedHoop = Instantiate(RedHoopPrefab, new Vector3(positionX, _ySpawnPoint, 0), Quaternion.identity);
+            GameObject newRedHoop = Instantiate(RedHoopPrefab, new Vector3(positionX, _ySpawnPoint, 0), Quaternion.Euler(0f, 0f, rotationZ));
             GameObject newGreyHoop = Instantiate(GreyHoopPrefab, currentRedHoop.position, Quaternion.identity);
             Destroy(currentRedHoop.gameObject);
 

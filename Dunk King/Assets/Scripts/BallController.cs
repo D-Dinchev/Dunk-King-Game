@@ -19,7 +19,13 @@ public class BallController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _lr = GetComponent<LineRenderer>();
 
-        GameEvents.Instance.OnRightHit += ToggleRotationActivity;
+        GameEvents.Instance.OnCalmBallDown += ToggleRotationActivity;
+
+        GameEvents.Instance.OnDead += MakeBallStatic;
+        GameEvents.Instance.OnDead += DisableComponent;
+
+        GameEvents.Instance.OnRestart += MakeBallDynamic;
+        GameEvents.Instance.OnRestart += EnableComponent;
     }
 
     private void Update()
@@ -57,7 +63,7 @@ public class BallController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            ToggleRotationActivity();
+            _isRotationActive = true;
             _lr.positionCount = 0;
             Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
@@ -99,7 +105,6 @@ public class BallController : MonoBehaviour
 
         _stickedHoop = hoop;
         transform.parent = _stickedHoop.transform;
-        //GetComponent<Rigidbody2D>().simulated = false;
     }
 
     public void UnstickToHoop()
@@ -107,7 +112,6 @@ public class BallController : MonoBehaviour
         if (!_stickedHoop) return;
         transform.parent = null;
         _stickedHoop = null;
-        //GetComponent<Rigidbody2D>().simulated = true;
     }
 
     private void ToggleRotationActivity()
@@ -115,8 +119,30 @@ public class BallController : MonoBehaviour
         _isRotationActive = !_isRotationActive;
     }
 
+    private void MakeBallStatic()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+    }
+
+    private void MakeBallDynamic()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    private void DisableComponent()
+    {
+        enabled = false;
+    }
+
+    private void EnableComponent()
+    {
+        enabled = true;
+    }
+
     private void OnDestroy()
     {
-        GameEvents.Instance.OnRightHit -= ToggleRotationActivity;
+        GameEvents.Instance.OnCalmBallDown -= ToggleRotationActivity;
+        GameEvents.Instance.OnDead -= MakeBallStatic;
+        GameEvents.Instance.OnRestart -= MakeBallDynamic;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RightHitHandler : MonoBehaviour
@@ -8,6 +6,5 @@ public class RightHitHandler : MonoBehaviour
     {
         GameEvents.Instance.RightHitEventTrigger();
     }
-
 
 }

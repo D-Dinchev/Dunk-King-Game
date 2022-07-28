@@ -15,4 +15,23 @@ public class GameEvents : MonoBehaviour
     {
         OnRightHit?.Invoke();
     }
+
+    public event Action OnCalmBallDown;
+    public void CalmBallDownTrigger()
+    {
+        OnCalmBallDown?.Invoke();
+    }
+
+    public event Action OnDead;
+    public void DieTrigger()
+    {
+        OnDead?.Invoke();
+    }
+
+    public event Action OnRestart;
+
+    public void RestartTrigger()
+    {
+        OnRestart?.Invoke();
+    }
 }
