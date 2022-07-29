@@ -4,7 +4,9 @@ public class RightHitHandler : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        GameEvents.Instance.RightHitEventTrigger();
+        OnRightHitEventArgs args = new OnRightHitEventArgs();
+        args.AudioTitle = "Right Hit";
+        GameEvents.Instance.RightHitEventTrigger(args);
     }
 
 }

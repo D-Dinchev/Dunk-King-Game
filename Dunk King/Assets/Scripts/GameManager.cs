@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         GameEvents.Instance.OnRightHit += IncreaseScore;
         GameEvents.Instance.OnRestart += Restart;
     }
-    private void IncreaseScore()
+    private void IncreaseScore(OnRightHitEventArgs args)
     {
         _score++;
         _scoreText.text = _score.ToString();

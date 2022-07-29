@@ -10,10 +10,10 @@ public class GameEvents : MonoBehaviour
         Instance = this;
     }
 
-    public event Action OnRightHit;
-    public void RightHitEventTrigger()
+    public event Action<OnRightHitEventArgs> OnRightHit;
+    public void RightHitEventTrigger(OnRightHitEventArgs args)
     {
-        OnRightHit?.Invoke();
+        OnRightHit?.Invoke(args);
     }
 
     public event Action OnCalmBallDown;
@@ -34,4 +34,9 @@ public class GameEvents : MonoBehaviour
     {
         OnRestart?.Invoke();
     }
+}
+
+public class OnRightHitEventArgs : EventArgs
+{
+    public string AudioTitle { get; set; }
 }

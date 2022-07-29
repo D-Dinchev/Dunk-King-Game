@@ -8,7 +8,7 @@ public class BallController : MonoBehaviour
     private LineRenderer _lr;
 
     private Vector2 _dragStartPos;
-    private float _maxVelocity = 9f;
+    private float _maxVelocity = 10f;
 
     private GameObject _stickedHoop;
 
@@ -47,6 +47,7 @@ public class BallController : MonoBehaviour
             Vector2 dragEndPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
             velocity = ClampVelocity(velocity, _maxVelocity);
+            Debug.Log(_rb.velocity.magnitude);
 
             Vector2[] trajectory = Plot(_rb, (Vector2) transform.position, velocity, 500);
             _lr.positionCount = trajectory.Length;
@@ -64,6 +65,9 @@ public class BallController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             _isRotationActive = true;
+
+            AudioManager.Instance.Play("Whoosh");
+
             _lr.positionCount = 0;
             Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
@@ -144,5 +148,13 @@ public class BallController : MonoBehaviour
         GameEvents.Instance.OnCalmBallDown -= ToggleRotationActivity;
         GameEvents.Instance.OnDead -= MakeBallStatic;
         GameEvents.Instance.OnRestart -= MakeBallDynamic;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bounds"))
+        {
+            AudioManager.Instance.Play("Hit");
+        }
     }
 }
