@@ -8,7 +8,7 @@ public class GreyHoop : MonoBehaviour
         GameEvents.Instance.OnRightHit += Destroy;
     }
 
-    private void Destroy()
+    private void Destroy(OnRightHitEventArgs args)
     {
         Destroy(gameObject);
     }

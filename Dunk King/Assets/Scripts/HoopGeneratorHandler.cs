@@ -8,7 +8,7 @@ public class HoopGeneratorHandler : MonoBehaviour
     public GameObject RedHoopPrefab;
     public GameObject GreyHoopPrefab;
 
-    private float _minYDifference = 1f, _maxYDifference = 3.5f;
+    private float _minYDifference = 1f, _maxYDifference = 3f;
     private float _maxRotationAnge = 34f;
 
     private Transform _bounds;
@@ -57,7 +57,7 @@ public class HoopGeneratorHandler : MonoBehaviour
         GameObject ball = GameObject.FindGameObjectWithTag("Player");
         ball.transform.position = startGreyHoop.transform.Find("front").position;
     }
-    private void GenerateRedHoop() // TODO
+    private void GenerateRedHoop(OnRightHitEventArgs args) // TODO
     {
         Transform currentRedHoop = GameObject.FindGameObjectWithTag("Red").transform;
 
