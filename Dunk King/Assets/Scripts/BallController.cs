@@ -47,7 +47,6 @@ public class BallController : MonoBehaviour
             Vector2 dragEndPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
             velocity = ClampVelocity(velocity, _maxVelocity);
-            Debug.Log(_rb.velocity.magnitude);
 
             Vector2[] trajectory = Plot(_rb, (Vector2) transform.position, velocity, 500);
             _lr.positionCount = trajectory.Length;
