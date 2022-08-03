@@ -7,6 +7,7 @@ public class HoopGeneratorHandler : MonoBehaviour
 
     public GameObject RedHoopPrefab;
     public GameObject GreyHoopPrefab;
+    public GameObject BallPrefab;
 
     private float _minYDifference = 1f, _maxYDifference = 3f;
     private float _maxRotationAnge = 34f;
@@ -52,12 +53,15 @@ public class HoopGeneratorHandler : MonoBehaviour
     public void StartGeneration()
     {
         GameObject startGreyHoop = Instantiate(GreyHoopPrefab, _startPosition, Quaternion.identity);
-        Instantiate(RedHoopPrefab, _boundsCenter + Vector3.up + Vector3.left / 2, Quaternion.identity);
+        Instantiate(RedHoopPrefab, _boundsCenter + Vector3.up + Vector3.right / 2, Quaternion.identity);
         
         GameObject ball = GameObject.FindGameObjectWithTag("Player");
+        if (!ball) Debug.Log("Ball doesn't exist!");
+        
+        ball.GetComponent<BallController>().CalmBallDown();
         ball.transform.position = startGreyHoop.transform.Find("front").position;
     }
-    private void GenerateRedHoop(OnRightHitEventArgs args) // TODO
+    private void GenerateRedHoop(OnRightHitEventArgs args)
     {
         Transform currentRedHoop = GameObject.FindGameObjectWithTag("Red").transform;
 
@@ -90,6 +94,8 @@ public class HoopGeneratorHandler : MonoBehaviour
 
     private IEnumerator LerpYPoint(Transform objPosition, float endPosition, float duration)
     {
+        if (!objPosition) yield break;
+
         float time = 0f;
         Vector2 startPosition = objPosition.position;
 
@@ -97,11 +103,15 @@ public class HoopGeneratorHandler : MonoBehaviour
 
         while (time < duration)
         {
+            if (!objPosition) yield break;
+
             float newY = Mathf.Lerp(startPosition.y, endPosition, time / duration);
             objPosition.position = new Vector3(objPosition.position.x, newY, transform.position.z);
             time += Time.deltaTime;
             yield return null;
         }
+
+        if (!objPosition) yield break;
 
         objPosition.position = new Vector3(objPosition.position.x, endPosition, transform.position.z);
         _ballController.UnstickToHoop();

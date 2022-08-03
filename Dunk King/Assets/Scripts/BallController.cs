@@ -14,11 +14,13 @@ public class BallController : MonoBehaviour
 
     private bool _isRotationActive = false;
 
-    private void Start()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _lr = GetComponent<LineRenderer>();
-
+    }
+    private void Start()
+    {
         GameEvents.Instance.OnCalmBallDown += ToggleRotationActivity;
 
         GameEvents.Instance.OnDead += MakeBallStatic;
@@ -145,8 +147,13 @@ public class BallController : MonoBehaviour
     private void OnDestroy()
     {
         GameEvents.Instance.OnCalmBallDown -= ToggleRotationActivity;
+
         GameEvents.Instance.OnDead -= MakeBallStatic;
+        GameEvents.Instance.OnDead -= DisableComponent;
+
         GameEvents.Instance.OnRestart -= MakeBallDynamic;
+        GameEvents.Instance.OnRestart -= EnableComponent;
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -155,5 +162,10 @@ public class BallController : MonoBehaviour
         {
             AudioManager.Instance.Play("Hit");
         }
+    }
+
+    public void CalmBallDown()
+    {
+        _rb.velocity = Vector2.zero;
     }
 }
