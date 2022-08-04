@@ -8,6 +8,19 @@ public class CanvasManager : MonoBehaviour
     private GameObject _canvas;
     private GameObject _mainMenu;
 
+    public GameObject MainMenu
+    {
+        get
+        {
+            return _mainMenu;
+        }
+
+        private set
+        {
+            _mainMenu = value;
+        }
+    }
+
     private Button _restartButton;
 
     private CanvasGroup _canvasGroup;

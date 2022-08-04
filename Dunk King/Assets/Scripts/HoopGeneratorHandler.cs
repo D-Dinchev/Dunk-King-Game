@@ -31,11 +31,11 @@ public class HoopGeneratorHandler : MonoBehaviour
         Instance = this;
         _bounds = GameObject.FindGameObjectWithTag("Bounds").transform;
         _startPosition = _bounds.transform.Find("StartPosition").position;
+        _boundsCenter = _bounds.transform.Find("Center").position;
     }
 
     private void Start()
     {
-        _boundsCenter = _bounds.transform.Find("Center").position;
         _ySpawnPoint = _bounds.transform.Find("YSpawnPoint").position.y;
         _rightCornerOfBounds = _bounds.Find("Right").GetComponent<SpriteRenderer>().bounds.min;
         _leftCornerOfBounds = _bounds.Find("Left").GetComponent<SpriteRenderer>().bounds.max;

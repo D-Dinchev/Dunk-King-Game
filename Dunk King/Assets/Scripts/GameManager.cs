@@ -12,6 +12,20 @@ public class GameManager : MonoBehaviour
     private TextMeshProUGUI _scoreText;
 
     private int _score = 0;
+
+    public int Score
+    {
+        get
+        {
+            return _score;
+        }
+
+        private set
+        {
+            _score = value;
+        }
+    }
+
     private void Awake()
     {
         Instance = this;
@@ -48,4 +62,31 @@ public class GameManager : MonoBehaviour
         GameEvents.Instance.OnRightHit -= IncreaseScore;
         GameEvents.Instance.OnRestart -= Restart;
     }
+
+    private static void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            Instance.SaveAllData();
+        }
+    }
+
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            Instance.SaveAllData();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        Instance.SaveAllData();
+    }
+
+    private void SaveAllData()
+    {
+        GameEvents.Instance.AppQuitOrPauseTrigger();
+    }
+
 }

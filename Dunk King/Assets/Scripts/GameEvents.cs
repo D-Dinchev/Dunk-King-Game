@@ -34,6 +34,13 @@ public class GameEvents : MonoBehaviour
     {
         OnRestart?.Invoke();
     }
+
+    public event Action OnAppQuitOrPause;
+
+    public void AppQuitOrPauseTrigger()
+    {
+        OnAppQuitOrPause?.Invoke();
+    }
 }
 
 public class OnRightHitEventArgs : EventArgs
