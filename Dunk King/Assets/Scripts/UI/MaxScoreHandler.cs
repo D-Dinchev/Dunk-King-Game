@@ -76,9 +76,17 @@ public class MaxScoreHandler : MonoBehaviour
         if (GameManager.Instance.Score > _maxScore)
         {
             _maxScore = GameManager.Instance.Score;
+            GameEvents.Instance.NewHighScoreTrigger();
+            Debug.Log("Aboba");
+
         }
 
         CanvasManager.Instance.MainMenu.SetActive(false);
+    }
+
+    public bool CheckForMaxScore()
+    {
+        return GameManager.Instance.Score > _maxScore;
     }
 
     private void OnDestroy()

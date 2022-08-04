@@ -41,6 +41,13 @@ public class GameEvents : MonoBehaviour
     {
         OnAppQuitOrPause?.Invoke();
     }
+
+    public event Action OnNewHighScore;
+
+    public void NewHighScoreTrigger()
+    {
+        OnNewHighScore?.Invoke();
+    }
 }
 
 public class OnRightHitEventArgs : EventArgs
