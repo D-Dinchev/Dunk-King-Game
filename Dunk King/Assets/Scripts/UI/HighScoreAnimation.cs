@@ -25,7 +25,6 @@ public class HighScoreAnimation : MonoBehaviour
         GameEvents.Instance.OnRestart += SetShowAnimToTrue;
 
         GameEvents.Instance.OnNewHighScore += PlayHighScoreAnimation;
-        GameEvents.Instance.OnNewHighScore += SetShowAnimToFalse;
 
         gameObject.SetActive(false);
     }
@@ -40,6 +39,8 @@ public class HighScoreAnimation : MonoBehaviour
             transform.LeanScale(Vector3.one, 1f).setEase(LeanTweenType.easeInOutQuart);
             transform.LeanMoveX(transform.position.x - 0.25f, 0.4f).setEase(LeanTweenType.easeOutQuad).setDelay(1f);
             transform.LeanMoveX(transform.position.x + 4f, 0.7f).setEase(LeanTweenType.easeOutCirc).setDelay(1.4f).setOnComplete(() => gameObject.SetActive(false));
+
+            _showAnim = false;
         }
     }
 
@@ -48,23 +49,10 @@ public class HighScoreAnimation : MonoBehaviour
         _showAnim = true;
     }
 
-    private void SetShowAnimToFalse()
-    {
-        StartCoroutine(WaitForNextFrameThenDo(() => _showAnim = false));
-    }
-
-    private IEnumerator WaitForNextFrameThenDo(Action TODO)
-    {
-        yield return null;
-
-        TODO();
-    }
-
     private void OnDestroy()
     {
         GameEvents.Instance.OnRestart -= SetShowAnimToTrue;
 
         GameEvents.Instance.OnNewHighScore -= PlayHighScoreAnimation;
-        GameEvents.Instance.OnNewHighScore -= SetShowAnimToFalse;
     }
 }

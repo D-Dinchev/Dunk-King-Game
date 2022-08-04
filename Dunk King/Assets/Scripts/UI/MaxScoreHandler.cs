@@ -77,8 +77,6 @@ public class MaxScoreHandler : MonoBehaviour
         {
             _maxScore = GameManager.Instance.Score;
             GameEvents.Instance.NewHighScoreTrigger();
-            Debug.Log("Aboba");
-
         }
 
         CanvasManager.Instance.MainMenu.SetActive(false);
