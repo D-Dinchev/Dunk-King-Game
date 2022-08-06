@@ -41,12 +41,12 @@ public class BallController : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0))
         {
-            _dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _dragStartPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) * 1.5f;
         }
 
         if (Input.GetMouseButton(0))
         {
-            Vector2 dragEndPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dragEndPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) * 1.5f;
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
             velocity = ClampVelocity(velocity, _maxVelocity);
 
@@ -70,7 +70,7 @@ public class BallController : MonoBehaviour
             AudioManager.Instance.Play("Whoosh");
 
             _lr.positionCount = 0;
-            Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dragEndPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) * 1.5f;
             Vector2 velocity = (dragEndPos - (Vector2)transform.position) * Power * -1f;
             velocity = ClampVelocity(velocity, _maxVelocity);
 
