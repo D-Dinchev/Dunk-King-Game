@@ -8,6 +8,7 @@ TagManager:
   - Red
   - Bounds
   - Canvas
+  - GenerationBounds
   layers:
   - Default
   - TransparentFX

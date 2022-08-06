@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class KeepInViewport : MonoBehaviour
@@ -33,10 +31,5 @@ public class KeepInViewport : MonoBehaviour
 
         float middleXPoint = ((_leftWall.transform.position.x + _wallWidth) + (_rightWall.transform.position.x - _wallWidth)) / 2f;
         _bottomWall.transform.position = new Vector3(middleXPoint, _bottomWall.transform.position.y, _bottomWall.transform.position.z);
-    }
-
-    private void LateUpdate()
-    {
-
     }
 }

@@ -7,7 +7,6 @@ public class HoopGeneratorHandler : MonoBehaviour
 
     public GameObject RedHoopPrefab;
     public GameObject GreyHoopPrefab;
-    public GameObject BallPrefab;
 
     private float _minYDifference = 1f, _maxYDifference = 3f;
     private float _maxRotationAnge = 34f;
@@ -29,7 +28,7 @@ public class HoopGeneratorHandler : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        _bounds = GameObject.FindGameObjectWithTag("Bounds").transform;
+        _bounds = GameObject.FindGameObjectWithTag("GenerationBounds").transform;
         _startPosition = _bounds.transform.Find("StartPosition").position;
         _boundsCenter = _bounds.transform.Find("Center").position;
     }
@@ -39,7 +38,6 @@ public class HoopGeneratorHandler : MonoBehaviour
         _ySpawnPoint = _bounds.transform.Find("YSpawnPoint").position.y;
         _rightCornerOfBounds = _bounds.Find("Right").GetComponent<SpriteRenderer>().bounds.min;
         _leftCornerOfBounds = _bounds.Find("Left").GetComponent<SpriteRenderer>().bounds.max;
-        GameObject topOfBounds = _bounds.transform.Find("Top").gameObject;
 
         _ballController = GameObject.FindGameObjectWithTag("Player").GetComponent<BallController>();
 
